@@ -3,14 +3,14 @@ import {getRecaidas, getAllRecaidas, addRecaidas, updateRecaidas, deleteRecaidas
 
 const router = express.Router();
 
-router.get("/", getAllRecaidas);
+router.get("/all/:id_vicio_user", getAllRecaidas);
 
-router.get("/:id", getRecaidas);
+router.get("/:id_vicio_user", getRecaidas);
 
-router.post("/", addRecaidas);
+router.post("/:id_vicio_user", addRecaidas);
 
-router.put("/:id", updateRecaidas);
+router.put("/", updateRecaidas);
 
-router.delete("/:id", deleteRecaidas);
+router.delete("/", deleteRecaidas);
 
 export default router

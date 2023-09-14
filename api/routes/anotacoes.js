@@ -3,14 +3,14 @@ import {getAnotacoes, getAllAnotacoes, addAnotacoes, updateAnotacoes, deleteAnot
 
 const router = express.Router();
 
-router.get("/", getAllAnotacoes);
+router.get("/all/:id_vicio_user", getAllAnotacoes);
 
-router.get("/:id", getAnotacoes);
+router.get("/:id_vicio_user", getAnotacoes);
 
-router.post("/", addAnotacoes);
+router.post("/:id_vicio_user", addAnotacoes);
 
-router.put("/:id", updateAnotacoes);
+router.put("/", updateAnotacoes);
 
-router.delete("/:id", deleteAnotacoes);
+router.delete("/", deleteAnotacoes);
 
 export default router

@@ -11,12 +11,12 @@ export const getAllViciosUser = (_, res) => {
 };
 
 export const getViciosUser = (req, res) => {
-    const q = "SELECT * FROM vicios_do_user WHERE `id` = ?";
+    const q = "SELECT vicios_do_user.id, vicios_do_user.data_abs, vicios.nome, vicios.icone FROM vicios_do_user INNER JOIN vicios ON vicios_do_user.id_vicio = vicios.id WHERE `vicios_do_user.id` = ?";
   
-    db.query(q, [req.params.id], (err) => {
+    db.query(q, [req.params.id], (err, data) => {
       if (err) return res.json(err);
   
-      return res.status(200).json("Vicio do usuário visualizado com sucesso.");
+      return res.status(200).json(data);
     });
   };
 

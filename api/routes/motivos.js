@@ -3,14 +3,14 @@ import {getMotivos, getAllMotivos, addMotivos, updateMotivos, deleteMotivos} fro
 
 const router = express.Router();
 
-router.get("/", getAllMotivos);
+router.get("/all/:id_vicio_user", getAllMotivos);
 
-router.get("/:id", getMotivos);
+router.get("/:id_vicio_user", getMotivos);
 
-router.post("/", addMotivos);
+router.post("/:id_vicio_user", addMotivos);
 
-router.put("/:id", updateMotivos);
+router.put("/", updateMotivos);
 
-router.delete("/:id", deleteMotivos);
+router.delete("/", deleteMotivos);
 
 export default router

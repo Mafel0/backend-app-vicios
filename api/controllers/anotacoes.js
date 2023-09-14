@@ -1,64 +1,72 @@
 import { db } from "../db.js";
 
-export const getAllAnotacoes = (_, res) => {
-    const q = "SELECT * FROM anotacoes";
+export const getAllAnotacoes = (req, res) => {
+    const q = "SELECT * FROM anotacoes INNER JOIN anotacoes_user ON anotacoes.id = anotacoes_user.id_anotacoes WHERE anotacoes_user.`id_vicio_user` = ? ";
 
-    db.query(q, (err, data) => {
+    db.query(q, [req.params.id_vicio_user], (err, data) => {
         if (err) return res.json(err);
-
+    
         return res.status(200).json(data);
-    });
+      });
 };
 
 export const getAnotacoes = (req, res) => {
-    const q = "SELECT * FROM anotacoes WHERE `id` = ?";
+    const q = "SELECT * FROM anotacoes INNER JOIN anotacoes_user ON anotacoes.id = anotacoes_user.id_anotacoes WHERE anotacoes_user.`id_vicio_user` = ? AND anotacoes_user.`id_anotacoes` = ?";
+
+    const values = [
+        req.body.id_anotacoes,
+    ];
   
-    db.query(q, [req.params.id], (err) => {
+    db.query(q, [req.params.id_vicio_user, ...values], (err, data) => {
       if (err) return res.json(err);
   
-      return res.status(200).json("Anotação do usuário visualizada com sucesso.");
+      return res.status(200).json(data);
     });
   };
 
 export const addAnotacoes = (req, res) => {
     const q =
-      "INSERT INTO Anotacoes(`id_vicio_user`, `texto`, `data_anot`) VALUES(?)";
+      "INSERT INTO anotacoes(`texto`,`data_anot`) VALUES(?); SET @last_id_anotacoes = LAST_INSERT_ID(); INSERT INTO anotacoes_user (`id_vicio_user`, id_anotacoes) VALUES (?,@last_id_anotacoes)";
   
     const values = [
-      req.body.id_vicio_user,
       req.body.texto,
       req.body.data_anot
     ];
   
-    db.query(q, [values], (err) => {
+    db.query(q, [values, req.params.id_vicio_user], (err) => {
       if (err) return res.json(err);
   
-      return res.status(200).json("Anotação registrada com sucesso.");
+      return res.status(200).json("Anotacação registrada com sucesso.");
     });
   };
   
   export const updateAnotacoes = (req, res) => {
     const q =
-      "UPDATE anotacoes SET `id_vicio_user` = ?, `texto` = ?, `data_anot` = ? WHERE `id` = ?";
+      "UPDATE anotacoes SET `texto` = ?, `data_anot` = ? WHERE `id` = ?";
   
     const values = [
-      req.body.id_vicio_user,
-      req.body.texto
+      req.body.texto,
+      req.body.data_anot,
+      req.body.id
     ];
   
-    db.query(q, [...values, req.params.id], (err) => {
+    db.query(q, [...values], (err) => {
       if (err) return res.json(err);
   
-      return res.status(200).json("Anotação atualizada com sucesso.");
+      return res.status(200).json("Anotacação atualizada com sucesso.");
     });
   };
   
   export const deleteAnotacoes = (req, res) => {
     const q = "DELETE FROM anotacoes WHERE `id` = ?";
-  
-    db.query(q, [req.params.id], (err) => {
+
+    const values = [
+      req.body.id
+    ];
+
+    db.query(q, [values], (err) => {
       if (err) return res.json(err);
   
-      return res.status(200).json("Anotação do usuário deletada com sucesso.");
+      return res.status(200).json("Anotacação do usuário deletada com sucesso.");
     });
   };
