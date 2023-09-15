@@ -11,7 +11,7 @@ export const getAllViciosUser = (_, res) => {
 };
 
 export const getViciosUser = (req, res) => {
-    const q = "SELECT vicios_do_user.id, vicios_do_user.data_abs, vicios.nome, vicios.icone FROM vicios_do_user INNER JOIN vicios ON vicios_do_user.id_vicio = vicios.id WHERE `vicios_do_user.id` = ?";
+    const q = "SELECT vicios_do_user.id, vicios_do_user.data_abs, vicios.nome, vicios.icone FROM vicios_do_user INNER JOIN vicios ON vicios_do_user.id_vicio = vicios.id WHERE vicios_do_user.`id` = ?";
   
     db.query(q, [req.params.id], (err, data) => {
       if (err) return res.json(err);
